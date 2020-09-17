@@ -372,6 +372,24 @@ class MailHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(['override@owner.com'], array_unique($fromAddresses));
     }
 
+    public function testStandardEmailReplyTo()
+    {
+        $mockFactory = $this->getMockFactory(true);
+        $transport   = new BatchTransport();
+        $swiftMailer = new \Swift_Mailer($transport);
+        $mailer      = new MailHelper($mockFactory, $swiftMailer, ['nobody@nowhere.com' => 'No Body']);
+        $email       = new Email();
+
+        $mailer->setEmail($email);
+        $replyTo = key($mailer->message->getReplyTo());
+        $this->assertEquals('nobody@nowhere.com', $replyTo);
+
+        $email->setReplyToAddress('replytooverride@nowhere.com');
+        $mailer->setEmail($email);
+        $replyTo = key($mailer->message->getReplyTo());
+        $this->assertEquals('replytooverride@nowhere.com', $replyTo);
+    }
+
     public function testStandardOwnerAsMailer()
     {
         $mockFactory = $this->getMockFactory();
