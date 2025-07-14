@@ -1,42 +1,51 @@
 version: 2
 updates:
-  - package-ecosystem: "composer"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    pull-request-branch-name:
-      separator: "-"
-    groups:
-      composer-dependencies:
-        patterns:
-          - "*"
-    registries:
-      - jfrog
-
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    pull-request-branch-name:
-      separator: "-"
-    groups:
-      npm-dependencies:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "docker"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    pull-request-branch-name:
-      separator: "-"
-    groups:
-      docker-dependencies:
-        patterns:
-          - "*"
-    registries:
-      - jfrog
-
+- package-ecosystem: composer
+  directory: /
+  schedule:
+    interval: weekly
+  pull-request-branch-name:
+    separator: "-"
+  groups:
+    composer-dependencies:
+      patterns:
+      - "*"
+  registries:
+  - jfrog
+  ignore:
+  - update-types:
+    - version-update:semver-major
+  - dependency-name: "*"
+- package-ecosystem: npm
+  directory: /
+  schedule:
+    interval: weekly
+  pull-request-branch-name:
+    separator: "-"
+  groups:
+    npm-dependencies:
+      patterns:
+      - "*"
+  ignore:
+  - update-types:
+    - version-update:semver-major
+  - dependency-name: "*"
+- package-ecosystem: docker
+  directory: /
+  schedule:
+    interval: weekly
+  pull-request-branch-name:
+    separator: "-"
+  groups:
+    docker-dependencies:
+      patterns:
+      - "*"
+  registries:
+  - jfrog
+  ignore:
+  - update-types:
+    - version-update:semver-major
+  - dependency-name: "*"
 registries:
   jfrog:
     type: docker-registry
